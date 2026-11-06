@@ -51,7 +51,7 @@
       <h3>WHAT'S ON THE HOLE</h3>
       <div class="item"><div class="n">1</div><div><h4>Red Star Tee</h4><p>Black tee mat with the Heineken red star as the tee spot. The start point people will photograph.</p></div></div>
       <div class="item"><div class="n">2</div><div><h4>Heineken Green Fairway</h4><p>Signature green turf, mown in alternating stripes, with black rails and white pinstripe. Replaces standard green.</p></div></div>
-      <div class="item"><div class="n">3</div><div><h4>The Bunker + Star Post</h4><p>Fake bunker in sand-coloured turf, plus a small pot bunker. A fixed red star post blocks the straight line, so players bank off the rail or go around it.</p></div></div>
+      <div class="item"><div class="n">3</div><div><h4>The Bunker</h4><p>Narrow fake bunker in sand-coloured turf hugging the left rail, plus a small pot bunker on the right. The centre line is open, so a brave straight putt can run up and over the bridge.</p></div></div>
       <div class="item"><div class="n">4</div><div><h4>The Canal</h4><p>Blue water turf across the full width with wave graphics. The only dry way over is the narrow arched canal bridge.</p></div></div>
       <div class="item"><div class="n">5</div><div><h4>Canal House Gate</h4><p>Cut-out Amsterdam canal houses (a nod to Heineken's home city). Three doorways: two wide side doors, plus the narrow centre "Star Door" lined up with the cup.</p></div></div>
       <div class="item"><div class="n">6</div><div><h4>The Star Green</h4><p>Lighter turf green with a red star inlay. The cup sits in the centre of the star.</p></div></div>
@@ -110,14 +110,13 @@ function surface(){return `
  ${planks()}
  <rect x="164" y="436" width="7" height="186" rx="3" fill="#fff"/><rect x="249" y="436" width="7" height="186" rx="3" fill="#fff"/>
  <!-- bunkers -->
+ <g transform="translate(18,0) scale(0.55,1)">
  <path d="M48 712 C40 660 150 650 205 690 C250 722 236 790 200 830 C160 880 70 900 52 850 C38 812 92 790 78 760 C70 742 52 735 48 712 Z" fill="#e3c58a"/>
  <path d="M48 712 C40 660 150 650 205 690 C250 722 236 790 200 830 C160 880 70 900 52 850 C38 812 92 790 78 760 C70 742 52 735 48 712 Z" fill="url(#sand)" stroke="#c9a463" stroke-width="4"/>
+ <path d="M90 800 q15 -8 30 0 M120 760 q15 -8 30 0 M150 810 q15 -8 30 0" stroke="#b99558" stroke-width="2" fill="none"/>
+ </g>
  <ellipse cx="335" cy="900" rx="48" ry="38" fill="#e3c58a" stroke="#c9a463" stroke-width="4"/>
  <ellipse cx="335" cy="900" rx="48" ry="38" fill="url(#sand)"/>
- <path d="M90 800 q15 -8 30 0 M120 760 q15 -8 30 0 M150 810 q15 -8 30 0" stroke="#b99558" stroke-width="2" fill="none"/>
- <!-- star post -->
- <polygon points="${star(262,790,34,14)}" fill="#000" opacity=".3" transform="translate(5,7)"/>
- <polygon points="${star(262,790,34,14)}" fill="#d62b26" stroke="#8f1714" stroke-width="3"/>
  <!-- tee -->
  <rect x="110" y="1090" width="200" height="130" rx="10" fill="#121212"/>
  <rect x="116" y="1096" width="188" height="118" rx="7" fill="none" stroke="#fff" stroke-width="2" stroke-dasharray="6 5"/>
@@ -178,7 +177,7 @@ pb.innerHTML=`<div style="transform:scale(${s});transform-origin:0 0;position:ab
   <rect x="${22+376*0.87-376*0.085}" y="362" width="${376*0.17}" height="16" fill="#1f8a3b"/>
   <rect x="0" y="0" width="420" height="14" fill="#0e5a2b"/>
  </svg></div>`;
-const pins=[[1,210,1230],[2,370,1040],[3,150,770],[4,330,530],[5,130,410],[6,330,150]];
+const pins=[[1,210,1230],[2,370,1040],[3,85,780],[4,330,530],[5,130,410],[6,330,150]];
 pins.forEach(([n,x,y])=>{pb.innerHTML+=`<div class="pin" style="left:${x*s-13}px;top:${y*s-13}px">${n}</div>`});
 </script>
 </body></html>
