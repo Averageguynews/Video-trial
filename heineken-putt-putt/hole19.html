@@ -53,14 +53,13 @@
       <div class="item"><div class="n">2</div><div><h4>Heineken Green Fairway</h4><p>Signature green turf, mown in alternating stripes, with black rails and white pinstripe. Replaces standard green.</p></div></div>
       <div class="item"><div class="n">3</div><div><h4>The Bunker</h4><p>Narrow fake bunker in sand-coloured turf hugging the left rail, plus a small pot bunker on the right. The centre line is open, so a brave straight putt can run up and over the bridge.</p></div></div>
       <div class="item"><div class="n">4</div><div><h4>The Canal</h4><p>Blue water turf across the full width with wave graphics. The only dry way over is the narrow arched canal bridge.</p></div></div>
-      <div class="item"><div class="n">5</div><div><h4>Canal House Gate</h4><p>Cut-out Amsterdam canal houses (a nod to Heineken's home city). Three doorways: two wide side doors, plus the narrow centre "Star Door" lined up with the cup.</p></div></div>
-      <div class="item"><div class="n">6</div><div><h4>The Star Green</h4><p>Lighter turf green with a red star inlay. The cup sits in the centre of the star.</p></div></div>
+      <div class="item"><div class="n">5</div><div><h4>The Heineken Green</h4><p>Lighter turf green with the round Heineken logo inlaid. The cup sits right on the logo's red star.</p></div></div>
       <div class="rules">
         <h3>BAR RULES</h3>
         <ul>
           <li>Ball stops in the bunker: +1 stroke, play it where it lies.</li>
           <li>Ball stops in the canal: +1 stroke, replay from the bank.</li>
-          <li>Through the Star Door and in: ring the bell, win a prize.</li>
+          <li>Hole-in-one on the red star: ring the bell, win a prize.</li>
           <li>Max 6 strokes, then grab your ball and head back to the bar.</li>
         </ul>
       </div>
@@ -96,8 +95,9 @@ function surface(){return `
  ${stripes()}
  <!-- putting green -->
  <path d="M22 22 H398 V300 Q300 345 210 330 Q110 345 22 300 Z" fill="#8cc63f"/>
- <polygon points="${star(210,150,92,37)}" fill="#d62b26" stroke="#fff" stroke-width="4"/>
- <circle cx="210" cy="150" r="17" fill="#fff"/><circle cx="210" cy="150" r="13" fill="#111"/>
+ <circle cx="210" cy="190" r="114" fill="#fff"/>
+ <image href="logo_round_t.png" x="100" y="80" width="220" height="220"/>
+ <circle cx="211" cy="151" r="14" fill="#fff"/><circle cx="211" cy="151" r="11" fill="#111"/>
  <line x1="210" y1="150" x2="210" y2="148" stroke="#fff"/>
  <!-- canal -->
  <path d="M22 455 Q120 440 210 456 T398 450 V605 Q300 620 210 604 T22 610 Z" fill="#1e8fd8"/>
@@ -128,27 +128,6 @@ function surface(){return `
  <rect x="22" y="22" width="376" height="1216" fill="url(#turf)"/>
 </svg>`}
 
-function facade(w,h){ // Amsterdam canal houses with 3 doorways
-  const cols=['#1f8a3b','#f4efe4','#d62b26','#121212','#f4efe4'];
-  const hw=w/5;let houses='',wins='';
-  const tops=[40,20,48,14,34];
-  for(let i=0;i<5;i++){const x=i*hw,t=tops[i];
-    // bell / stepped gable
-    if(i%2==0) houses+=`<path d="M${x} ${h} V${t+60} h8 v-14 h8 v-14 h${hw/2-16-10} q10 -${t*0.2+20} 20 0 h${hw/2-16-10} v14 h8 v14 h8 V${h} Z" fill="${cols[i]}" stroke="#111" stroke-width="2"/>`;
-    else houses+=`<path d="M${x} ${h} V${t+60} q0 -30 ${hw*0.25} -36 q${hw*0.1} -18 ${hw*0.25} -26 q${hw*0.15} 8 ${hw*0.25} 26 q${hw*0.25} 6 ${hw*0.25} 36 V${h} Z" fill="${cols[i]}" stroke="#111" stroke-width="2"/>`;
-    const wc=(cols[i]=='#f4efe4')?'#1f8a3b':'#f4efe4';
-    for(let r=0;r<2;r++)for(let c=0;c<2;c++)wins+=`<rect x="${x+hw*0.2+c*hw*0.38}" y="${t+66+r*34}" width="${hw*0.22}" height="24" rx="3" fill="#bfe3f5" stroke="${wc}" stroke-width="3"/>`;
-  }
-  const doors=[[w*0.13,w*0.17],[w*0.5,w*0.11],[w*0.87,w*0.17]];
-  let mask=doors.map(([cx,dw])=>`<path d="M${cx-dw/2} ${h} V${h-52} a${dw/2} ${dw/2} 0 0 1 ${dw} 0 V${h} Z" fill="#000"/>`).join('');
-  let trims=doors.map(([cx,dw],i)=>`<path d="M${cx-dw/2} ${h} V${h-52} a${dw/2} ${dw/2} 0 0 1 ${dw} 0 V${h}" fill="none" stroke="${i==1?'#d62b26':'#fff'}" stroke-width="${i==1?6:4}"/>`).join('');
-  return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg">
-   <defs><mask id="dm${w}"><rect width="${w}" height="${h}" fill="#fff"/>${mask}</mask></defs>
-   <g mask="url(#dm${w})">${houses}${wins}<rect x="0" y="${h-70}" width="${w}" height="70" fill="#7a4b28" opacity=".0"/></g>
-   ${trims}
-   <polygon points="${star(w*0.5,h-86,13,5.3)}" fill="#d62b26" stroke="#fff" stroke-width="2"/>
-  </svg>`;
-}
 function sign(w,h){return `<div style="width:${w}px;height:${h}px;background:#0e5a2b;border:6px solid #121212;border-radius:6px;display:flex;align-items:center;gap:14px;padding:0 18px;box-shadow:inset 0 0 0 3px #fff">
   <img src="logo_round_t.png" style="height:${h-36}px">
   <div style="color:#fff;font-family:Oswald;line-height:1">
@@ -160,7 +139,6 @@ function sign(w,h){return `<div style="width:${w}px;height:${h}px;background:#0e
 // 3D hero
 const b=document.getElementById('board');
 b.innerHTML=surface()+
- `<div class="up" style="left:22px;width:376px;top:${372-170}px;height:170px">${facade(376,170)}</div>`+
  `<div class="up" style="left:-10px;width:440px;top:${0-200}px;height:200px">${sign(440,200)}</div>`+
  `<div class="up" style="left:0;width:420px;top:${H-26}px;height:26px;background:#121212;border-top:2px solid #fff"></div>`+
  `<div class="up" style="left:0;width:420px;top:${0-0}px;height:0"></div>`;
@@ -171,13 +149,9 @@ b.innerHTML=surface()+
 const s=0.7,pb=document.getElementById('planbox');
 pb.innerHTML=`<div style="transform:scale(${s});transform-origin:0 0;position:absolute">${surface()}
  <svg width="${W}" height="${H}" style="position:absolute;left:0;top:0">
-  <rect x="22" y="364" width="376" height="12" fill="#f4efe4" stroke="#111" stroke-width="2"/>
-  <rect x="${22+376*0.13-376*0.085}" y="362" width="${376*0.17}" height="16" fill="#1f8a3b"/>
-  <rect x="${22+376*0.5-376*0.055}" y="362" width="${376*0.11}" height="16" fill="#d62b26"/>
-  <rect x="${22+376*0.87-376*0.085}" y="362" width="${376*0.17}" height="16" fill="#1f8a3b"/>
   <rect x="0" y="0" width="420" height="14" fill="#0e5a2b"/>
  </svg></div>`;
-const pins=[[1,210,1230],[2,370,1040],[3,85,780],[4,330,530],[5,130,410],[6,330,150]];
+const pins=[[1,210,1230],[2,370,1040],[3,85,780],[4,330,530],[5,350,150]];
 pins.forEach(([n,x,y])=>{pb.innerHTML+=`<div class="pin" style="left:${x*s-13}px;top:${y*s-13}px">${n}</div>`});
 </script>
 </body></html>
