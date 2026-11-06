@@ -1,0 +1,184 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Heineken Hole 19</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Inter:wght@400;600;800&display=swap');
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{width:1600px;height:1120px;background:#f3f1ec;font-family:Inter,Arial,sans-serif;color:#13261a;overflow:hidden}
+  header{height:110px;background:#0e5a2b;color:#fff;display:flex;align-items:center;padding:0 44px;gap:22px;border-bottom:6px solid #d62b26}
+  header img{height:84px}
+  header h1{font-family:Oswald,sans-serif;font-size:42px;letter-spacing:1px;line-height:1}
+  header p{font-size:17px;opacity:.85;margin-top:6px}
+  header .tag{margin-left:auto;font-family:Oswald;font-size:20px;border:2px solid #fff;padding:8px 16px;border-radius:6px}
+  main{display:flex;height:1010px}
+  .hero{width:880px;position:relative;overflow:hidden;background:radial-gradient(ellipse at 50% 70%,#ffffff 0,#ecebe6 70%)}
+  .scene{position:absolute;left:0;top:0;width:880px;height:1010px;perspective:2000px;perspective-origin:50% 15%}
+  .board{position:absolute;left:230px;top:-150px;width:420px;height:1260px;transform-style:preserve-3d;
+         transform:scale(.74) rotateX(56deg) rotateZ(-14deg);transform-origin:50% 50%}
+  .board > svg{position:absolute;left:0;top:0;filter:drop-shadow(0 30px 25px rgba(0,0,0,.35))}
+  .up{position:absolute;transform-origin:50% 100%;transform:rotateX(-90deg)}
+  .side{position:absolute;width:420px;height:1260px;transform-style:preserve-3d}
+  .label3d{position:absolute;font-family:Oswald;font-size:15px;background:#13261a;color:#fff;padding:5px 10px;border-radius:20px;white-space:nowrap}
+  .label3d b{display:inline-block;background:#d62b26;border-radius:50%;width:20px;height:20px;text-align:center;line-height:20px;margin-right:6px;font-size:13px}
+  .right{flex:1;display:flex;padding:30px 36px 20px 10px;gap:28px}
+  .plan{width:300px;text-align:center}
+  .plan h3,.notes h3{font-family:Oswald;font-size:20px;letter-spacing:1px;color:#0e5a2b;margin-bottom:10px;text-align:left}
+  .planbox{position:relative;width:294px;height:882px}
+  .planbox svg{position:absolute;left:0;top:0}
+  .pin{position:absolute;width:26px;height:26px;border-radius:50%;background:#d62b26;color:#fff;font-family:Oswald;font-size:15px;line-height:26px;text-align:center;border:2px solid #fff;box-shadow:0 2px 5px rgba(0,0,0,.35)}
+  .notes{flex:1}
+  .item{display:flex;gap:12px;margin-bottom:15px}
+  .item .n{flex:none;width:30px;height:30px;border-radius:50%;background:#d62b26;color:#fff;font-family:Oswald;font-size:17px;text-align:center;line-height:30px}
+  .item h4{font-family:Oswald;font-size:18px;font-weight:500;line-height:1.1}
+  .item p{font-size:13.5px;line-height:1.38;color:#3b4a40;margin-top:3px}
+  .rules{background:#0e5a2b;color:#fff;border-radius:10px;padding:14px 18px;margin-top:6px}
+  .rules h3{color:#fff;margin-bottom:6px}
+  .rules li{font-size:13.5px;line-height:1.5;margin-left:18px}
+  .swatches{display:flex;gap:10px;margin-top:14px}
+  .sw{flex:1;font-size:11px;color:#3b4a40}
+  .sw i{display:block;height:26px;border-radius:5px;margin-bottom:4px;border:1px solid rgba(0,0,0,.12)}
+</style></head>
+<body>
+<header>
+  <img src="logo_round_t.png">
+  <div><h1>HOLE 19 · THE AMSTERDAM CANAL</h1><p>Heineken-branded mini golf hole · bar activation concept · approx. 1.0 m × 3.0 m module</p></div>
+  <div class="tag">PAR 3</div>
+</header>
+<main>
+  <section class="hero"><div class="scene"><div class="board" id="board"></div></div></section>
+  <section class="right">
+    <div class="plan"><h3>TOP-DOWN LAYOUT</h3><div class="planbox" id="planbox"></div></div>
+    <div class="notes">
+      <h3>WHAT'S ON THE HOLE</h3>
+      <div class="item"><div class="n">1</div><div><h4>Red Star Tee</h4><p>Black tee mat with the Heineken red star as the tee spot. The start point people will photograph.</p></div></div>
+      <div class="item"><div class="n">2</div><div><h4>Heineken Green Fairway</h4><p>Signature green turf, mown in alternating stripes, with black rails and white pinstripe. Replaces standard green.</p></div></div>
+      <div class="item"><div class="n">3</div><div><h4>The Bunker + Star Post</h4><p>Fake bunker in sand-coloured turf, plus a small pot bunker. A fixed red star post blocks the straight line, so players bank off the rail or go around it.</p></div></div>
+      <div class="item"><div class="n">4</div><div><h4>The Canal</h4><p>Blue water turf across the full width with wave graphics. The only dry way over is the narrow arched canal bridge.</p></div></div>
+      <div class="item"><div class="n">5</div><div><h4>Canal House Gate</h4><p>Cut-out Amsterdam canal houses (a nod to Heineken's home city). Three doorways: two wide side doors, plus the narrow centre "Star Door" lined up with the cup.</p></div></div>
+      <div class="item"><div class="n">6</div><div><h4>The Star Green</h4><p>Lighter turf green with a red star inlay. The cup sits in the centre of the star.</p></div></div>
+      <div class="rules">
+        <h3>BAR RULES</h3>
+        <ul>
+          <li>Ball stops in the bunker: +1 stroke, play it where it lies.</li>
+          <li>Ball stops in the canal: +1 stroke, replay from the bank.</li>
+          <li>Through the Star Door and in: ring the bell, win a prize.</li>
+          <li>Max 6 strokes, then grab your ball and head back to the bar.</li>
+        </ul>
+      </div>
+      <div class="swatches">
+        <div class="sw"><i style="background:#1f8a3b"></i>Fairway green</div>
+        <div class="sw"><i style="background:#8cc63f"></i>Putting green</div>
+        <div class="sw"><i style="background:#e3c58a"></i>Bunker sand</div>
+        <div class="sw"><i style="background:#1e8fd8"></i>Canal blue</div>
+        <div class="sw"><i style="background:#d62b26"></i>Star red</div>
+        <div class="sw"><i style="background:#121212"></i>Rails / tee</div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+const W=420,H=1260;
+function star(cx,cy,R,r,rot=-90){let p=[];for(let i=0;i<10;i++){const a=(rot+i*36)*Math.PI/180,rr=i%2?r:R;p.push((cx+rr*Math.cos(a)).toFixed(1)+','+(cy+rr*Math.sin(a)).toFixed(1))}return p.join(' ')}
+function stripes(){let s='';for(let y=330;y<1080;y+=50){s+=`<rect x="22" y="${y}" width="376" height="25" fill="#23933f"/>`}return s}
+function waves(){let s='';for(let y=470;y<600;y+=26){let d=`M22 ${y}`;for(let x=22;x<398;x+=28)d+=` q7 -7 14 0 t14 0`;s+=`<path d="${d}" stroke="#7cc8f2" stroke-width="2.5" fill="none" opacity=".75"/>`}return s}
+function planks(){let s='';for(let y=446;y<614;y+=12)s+=`<rect x="172" y="${y}" width="76" height="9" rx="1.5" fill="#c48a4f" stroke="#8a5a2b" stroke-width="1"/>`;return s}
+function surface(){return `
+<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">
+ <defs>
+  <pattern id="turf" width="6" height="6" patternUnits="userSpaceOnUse"><rect width="6" height="6" fill="none"/><circle cx="1.5" cy="2" r=".8" fill="#000" opacity=".12"/><circle cx="4.5" cy="4.5" r=".8" fill="#fff" opacity=".10"/></pattern>
+  <pattern id="sand" width="5" height="5" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r=".9" fill="#b99558" opacity=".55"/><circle cx="3.5" cy="3.2" r=".7" fill="#fff4d8" opacity=".7"/></pattern>
+ </defs>
+ <!-- rails -->
+ <rect x="0" y="0" width="${W}" height="${H}" rx="8" fill="#121212"/>
+ <rect x="8" y="8" width="${W-16}" height="${H-16}" rx="5" fill="none" stroke="#fff" stroke-width="2"/>
+ <!-- fairway -->
+ <rect x="22" y="22" width="376" height="1216" fill="#1f8a3b"/>
+ ${stripes()}
+ <!-- putting green -->
+ <path d="M22 22 H398 V300 Q300 345 210 330 Q110 345 22 300 Z" fill="#8cc63f"/>
+ <polygon points="${star(210,150,92,37)}" fill="#d62b26" stroke="#fff" stroke-width="4"/>
+ <circle cx="210" cy="150" r="17" fill="#fff"/><circle cx="210" cy="150" r="13" fill="#111"/>
+ <line x1="210" y1="150" x2="210" y2="148" stroke="#fff"/>
+ <!-- canal -->
+ <path d="M22 455 Q120 440 210 456 T398 450 V605 Q300 620 210 604 T22 610 Z" fill="#1e8fd8"/>
+ ${waves()}
+ <path d="M22 455 Q120 440 210 456 T398 450" stroke="#0f5f99" stroke-width="5" fill="none"/>
+ <path d="M398 605 Q300 620 210 604 T22 610" stroke="#0f5f99" stroke-width="5" fill="none"/>
+ <!-- bridge -->
+ <rect x="166" y="436" width="88" height="186" rx="6" fill="#000" opacity=".25" transform="translate(6,8)"/>
+ <rect x="166" y="436" width="88" height="186" rx="6" fill="#8a5a2b"/>
+ ${planks()}
+ <rect x="164" y="436" width="7" height="186" rx="3" fill="#fff"/><rect x="249" y="436" width="7" height="186" rx="3" fill="#fff"/>
+ <!-- bunkers -->
+ <path d="M48 712 C40 660 150 650 205 690 C250 722 236 790 200 830 C160 880 70 900 52 850 C38 812 92 790 78 760 C70 742 52 735 48 712 Z" fill="#e3c58a"/>
+ <path d="M48 712 C40 660 150 650 205 690 C250 722 236 790 200 830 C160 880 70 900 52 850 C38 812 92 790 78 760 C70 742 52 735 48 712 Z" fill="url(#sand)" stroke="#c9a463" stroke-width="4"/>
+ <ellipse cx="335" cy="900" rx="48" ry="38" fill="#e3c58a" stroke="#c9a463" stroke-width="4"/>
+ <ellipse cx="335" cy="900" rx="48" ry="38" fill="url(#sand)"/>
+ <path d="M90 800 q15 -8 30 0 M120 760 q15 -8 30 0 M150 810 q15 -8 30 0" stroke="#b99558" stroke-width="2" fill="none"/>
+ <!-- star post -->
+ <polygon points="${star(262,790,34,14)}" fill="#000" opacity=".3" transform="translate(5,7)"/>
+ <polygon points="${star(262,790,34,14)}" fill="#d62b26" stroke="#8f1714" stroke-width="3"/>
+ <!-- tee -->
+ <rect x="110" y="1090" width="200" height="130" rx="10" fill="#121212"/>
+ <rect x="116" y="1096" width="188" height="118" rx="7" fill="none" stroke="#fff" stroke-width="2" stroke-dasharray="6 5"/>
+ <polygon points="${star(210,1142,26,10.5)}" fill="#d62b26"/>
+ <text x="210" y="1200" text-anchor="middle" font-family="Oswald" font-weight="700" font-size="22" fill="#fff" letter-spacing="4">TEE OFF</text>
+ <text x="210" y="1015" text-anchor="middle" font-family="Oswald" font-weight="700" font-size="40" fill="#fff" opacity=".9" letter-spacing="3">THE 19TH</text>
+ <!-- entry ramp -->
+ <rect x="150" y="${H-8}" width="120" height="8" fill="#c9c9c9"/>
+ <rect x="22" y="22" width="376" height="1216" fill="url(#turf)"/>
+</svg>`}
+
+function facade(w,h){ // Amsterdam canal houses with 3 doorways
+  const cols=['#1f8a3b','#f4efe4','#d62b26','#121212','#f4efe4'];
+  const hw=w/5;let houses='',wins='';
+  const tops=[40,20,48,14,34];
+  for(let i=0;i<5;i++){const x=i*hw,t=tops[i];
+    // bell / stepped gable
+    if(i%2==0) houses+=`<path d="M${x} ${h} V${t+60} h8 v-14 h8 v-14 h${hw/2-16-10} q10 -${t*0.2+20} 20 0 h${hw/2-16-10} v14 h8 v14 h8 V${h} Z" fill="${cols[i]}" stroke="#111" stroke-width="2"/>`;
+    else houses+=`<path d="M${x} ${h} V${t+60} q0 -30 ${hw*0.25} -36 q${hw*0.1} -18 ${hw*0.25} -26 q${hw*0.15} 8 ${hw*0.25} 26 q${hw*0.25} 6 ${hw*0.25} 36 V${h} Z" fill="${cols[i]}" stroke="#111" stroke-width="2"/>`;
+    const wc=(cols[i]=='#f4efe4')?'#1f8a3b':'#f4efe4';
+    for(let r=0;r<2;r++)for(let c=0;c<2;c++)wins+=`<rect x="${x+hw*0.2+c*hw*0.38}" y="${t+66+r*34}" width="${hw*0.22}" height="24" rx="3" fill="#bfe3f5" stroke="${wc}" stroke-width="3"/>`;
+  }
+  const doors=[[w*0.13,w*0.17],[w*0.5,w*0.11],[w*0.87,w*0.17]];
+  let mask=doors.map(([cx,dw])=>`<path d="M${cx-dw/2} ${h} V${h-52} a${dw/2} ${dw/2} 0 0 1 ${dw} 0 V${h} Z" fill="#000"/>`).join('');
+  let trims=doors.map(([cx,dw],i)=>`<path d="M${cx-dw/2} ${h} V${h-52} a${dw/2} ${dw/2} 0 0 1 ${dw} 0 V${h}" fill="none" stroke="${i==1?'#d62b26':'#fff'}" stroke-width="${i==1?6:4}"/>`).join('');
+  return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg">
+   <defs><mask id="dm${w}"><rect width="${w}" height="${h}" fill="#fff"/>${mask}</mask></defs>
+   <g mask="url(#dm${w})">${houses}${wins}<rect x="0" y="${h-70}" width="${w}" height="70" fill="#7a4b28" opacity=".0"/></g>
+   ${trims}
+   <polygon points="${star(w*0.5,h-86,13,5.3)}" fill="#d62b26" stroke="#fff" stroke-width="2"/>
+  </svg>`;
+}
+function sign(w,h){return `<div style="width:${w}px;height:${h}px;background:#0e5a2b;border:6px solid #121212;border-radius:6px;display:flex;align-items:center;gap:14px;padding:0 18px;box-shadow:inset 0 0 0 3px #fff">
+  <img src="logo_round_t.png" style="height:${h-36}px">
+  <div style="color:#fff;font-family:Oswald;line-height:1">
+   <div style="font-size:${h*0.28}px;font-weight:700">HOLE 19</div>
+   <div style="font-size:${h*0.1}px;margin-top:6px;letter-spacing:1px">THE AMSTERDAM CANAL</div>
+   <div style="display:inline-block;margin-top:10px;background:#d62b26;padding:4px 10px;border-radius:4px;font-size:${h*0.09}px">PAR 3</div>
+  </div></div>`}
+
+// 3D hero
+const b=document.getElementById('board');
+b.innerHTML=surface()+
+ `<div class="up" style="left:22px;width:376px;top:${372-170}px;height:170px">${facade(376,170)}</div>`+
+ `<div class="up" style="left:-10px;width:440px;top:${0-200}px;height:200px">${sign(440,200)}</div>`+
+ `<div class="up" style="left:0;width:420px;top:${H-26}px;height:26px;background:#121212;border-top:2px solid #fff"></div>`+
+ `<div class="up" style="left:0;width:420px;top:${0-0}px;height:0"></div>`;
+// side rails (upright, along the length)
+['0','394'].forEach(x=>{b.innerHTML+=`<div style="position:absolute;left:${x}px;top:0;width:26px;height:${H}px;background:#0a0a0a;transform:translateZ(13px);"></div>`});
+
+// plan view
+const s=0.7,pb=document.getElementById('planbox');
+pb.innerHTML=`<div style="transform:scale(${s});transform-origin:0 0;position:absolute">${surface()}
+ <svg width="${W}" height="${H}" style="position:absolute;left:0;top:0">
+  <rect x="22" y="364" width="376" height="12" fill="#f4efe4" stroke="#111" stroke-width="2"/>
+  <rect x="${22+376*0.13-376*0.085}" y="362" width="${376*0.17}" height="16" fill="#1f8a3b"/>
+  <rect x="${22+376*0.5-376*0.055}" y="362" width="${376*0.11}" height="16" fill="#d62b26"/>
+  <rect x="${22+376*0.87-376*0.085}" y="362" width="${376*0.17}" height="16" fill="#1f8a3b"/>
+  <rect x="0" y="0" width="420" height="14" fill="#0e5a2b"/>
+ </svg></div>`;
+const pins=[[1,210,1230],[2,370,1040],[3,150,770],[4,330,530],[5,130,410],[6,330,150]];
+pins.forEach(([n,x,y])=>{pb.innerHTML+=`<div class="pin" style="left:${x*s-13}px;top:${y*s-13}px">${n}</div>`});
+</script>
+</body></html>
