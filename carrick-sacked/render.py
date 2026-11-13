@@ -6,12 +6,13 @@ title, photo panel + presenter panel, word-by-word captions, BREAKING ticker)
 from three raw selfie takes and one still graphic.
 
 Usage:
-  python3 render.py --takes A.mov B.mov C.mov --photo carrick.jpg \
-      --fonts FONT_DIR --out out.mp4 [--music song.mp3 --music-start 0]
+  python3 render.py --takes A.mov B.mov C.mov --photos clap.jpg nose.jpg sacked.jpg \
+      --fonts FONT_DIR --out out.mp4 [--music song.mp4 --music-start 3.4]
 
---music: optional intro track (e.g. a licensed copy of the song you want).
-It plays loud over the intro and is ducked under the talking. Without it a
-short generated news sting is used.
+--photos: clap (looking up, clapping), nose (hand over face), sacked ("SACKED" poster).
+--music: intro track (audio is taken from any audio/video file). It plays loud
+over the intro and continues as a quiet background bed under the talking.
+Without it a short generated news sting is used.
 """
 import argparse, math, os, subprocess, sys, wave
 import numpy as np
@@ -22,11 +23,12 @@ SR = 48000
 
 ap = argparse.ArgumentParser()
 ap.add_argument("--takes", nargs=3, required=True)
-ap.add_argument("--photo", required=True)
+ap.add_argument("--photos", nargs=3, required=True)
 ap.add_argument("--fonts", required=True)
 ap.add_argument("--out", required=True)
 ap.add_argument("--music")
-ap.add_argument("--music-start", type=float, default=0.0)
+ap.add_argument("--music-start", type=float, default=3.4)
+ap.add_argument("--bed", type=float, default=0.2, help="background music level under talking")
 ap.add_argument("--work", default="/tmp/fafo_work")
 args = ap.parse_args()
 os.makedirs(args.work, exist_ok=True)
@@ -36,7 +38,9 @@ def anton(s): return ImageFont.truetype(f"{F}/fontsource-anton/files/anton-latin
 def mont(s, w=900): return ImageFont.truetype(f"{F}/fontsource-montserrat/files/montserrat-latin-{w}-normal.woff", s)
 
 # ---------------------------------------------------------------- timeline
-INTRO = 3.0
+INTRO = 6.4
+# intro picture cuts (start, photo key) - timed to the chant: na-na / hey hey hey / goodbye
+INTRO_CUTS = [(0.0, "nose"), (1.9, "clap"), (3.7, "sacked")]
 # (file index, trim start, trim end)
 CLIPS = [(0, 0.0, 7.6), (1, 0.45, 8.0), (2, 0.0, 9.5)]
 clip_starts, t = [], INTRO
@@ -67,11 +71,11 @@ CAPS = {
 TICKER = ["CARRICK OUT AT OLD TRAFFORD", "MAN UTD HUNT FOR ANOTHER NEW BOSS",
           "FOUR HORSEMEN SPOTTED IN MANCHESTER", "TARGET: TENTH PLACE"]
 # Photo panel moves (crop boxes in the source photo, x0,y0,x1,y1) + label
-PHOTO_SHOTS = [  # (start time in video, crop box start, crop box end, tag)
- (INTRO,        (760, 120, 1440, 1240), (860, 200, 1360, 1020), "IT'S OFFICIAL"),
- (INTRO+4.0,    (40, 560, 760, 1800),   (40, 600, 700, 1720),   "SACKED"),
- (clip_starts[1], (300, 0, 1440, 1800), (620, 300, 1300, 1430), "RELEGATION WATCH"),
- (clip_starts[2], (820, 180, 1300, 980), (700, 0, 1440, 1210), "NEXT STOP: 10TH?"),
+PHOTO_SHOTS = [  # (start time in video, photo, crop box start, crop box end, tag)
+ (INTRO,          "clap",   (90, 0, 560, 791),   (190, 40, 500, 560),  "IT'S OFFICIAL"),
+ (INTRO+4.0,      "sacked", (120, 60, 620, 840), (220, 120, 520, 650), "SACKED"),
+ (clip_starts[1], "nose",   (300, 0, 760, 736),  (380, 60, 680, 560),  "RELEGATION WATCH"),
+ (clip_starts[2], "sacked", (250, 180, 500, 600), (130, 30, 580, 790),  "NEXT STOP: 10TH?"),
 ]
 
 # ---------------------------------------------------------------- layout
@@ -182,7 +186,7 @@ def caption_img(word, col):
     return img
 
 # ---------------------------------------------------------------- media
-photo = Image.open(args.photo).convert("RGB")
+PHOTOS = {k: Image.open(p).convert("RGB") for k, p in zip(("clap", "nose", "sacked"), args.photos)}
 
 def decode_clip(path, a, b):
     vf = f"scale={RVW}:-2,crop={RVW}:{RVH}:0:'min(ih-{RVH},ih*0.06)'"
@@ -217,9 +221,13 @@ ticker, tick_period = make_ticker_strip()
 brk = breaking_block(); ntag = name_tag()
 T1, T2 = title_layers()
 cap_cache = {}
-INTRO_BG = Image.blend(photo.resize((W, H), Image.LANCZOS, box=(0, 0, photo.width * 0.9, photo.height)).filter(ImageFilter.GaussianBlur(40)),
+def blur_bg(im):
+    r = W / H; pw, ph = im.size
+    box = (0, 0, pw, pw / r) if pw / ph < r else ((pw - ph * r) / 2, 0, (pw + ph * r) / 2, ph)
+    return Image.blend(im.resize((W, H), Image.LANCZOS, box=box).filter(ImageFilter.GaussianBlur(40)),
                        Image.new("RGB", (W, H), (0, 0, 0)), 0.45).convert("RGBA")
-tags = {s[3]: tag_img(s[3]) for s in PHOTO_SHOTS}
+INTRO_BG = {k: blur_bg(v) for k, v in PHOTOS.items()}
+tags = {s[4]: tag_img(s[4]) for s in PHOTO_SHOTS}
 live_f = anton(34); hdr_f = mont(27, 900)
 
 def header(d, t):
@@ -232,13 +240,17 @@ def header(d, t):
     d.text((240, 194), " ".join(txt), font=hdr_f, fill=col, anchor="lm")
 
 def intro_frame(t):
-    k = t / INTRO
-    z = 1.0 + 0.08 * ease(k)
-    fr = INTRO_BG.copy()
-    pw, ph = photo.size
+    ci = max(i for i, c in enumerate(INTRO_CUTS) if c[0] <= t)
+    c0 = INTRO_CUTS[ci][0]; c1 = INTRO_CUTS[ci + 1][0] if ci + 1 < len(INTRO_CUTS) else INTRO
+    key = INTRO_CUTS[ci][1]; im = PHOTOS[key]
+    k = (t - c0) / (c1 - c0)
+    z = 1.04 + 0.10 * ease(k)
+    fr = INTRO_BG[key].copy()
+    pw, ph = im.size
     fw = int(W * z); fh = int(ph * fw / pw)
-    fg = photo.resize((fw, fh), Image.BILINEAR)
-    fr.paste(fg, ((W - fw) // 2, 120 + (1350 - fh) // 2))
+    if fh > 1440: fh = int(1300 * z); fw = int(pw * fh / ph)
+    fg = im.resize((fw, fh), Image.BILINEAR)
+    fr.paste(fg, ((W - fw) // 2, 90 + (1400 - fh) // 2))
     d = ImageDraw.Draw(fr)
     # punchy "FAFO NEWS" bug + breaking slam
     s = ease((t - 0.25) / 0.35)
@@ -249,10 +261,10 @@ def intro_frame(t):
         d.text((bx + 320, 1545), "FAFO", font=anton(54), fill="white", anchor="lm")
         d.text((bx + 440, 1545), "NEWS", font=mont(28, 900), fill=(255, 200, 40), anchor="lm")
     # shake on the slam
-    if 0.55 < t < 0.8:
+    if 0.55 < t < 0.8 or INTRO_CUTS[-1][0] < t < INTRO_CUTS[-1][0] + 0.25:
         fr = fr.transform(fr.size, Image.AFFINE, (1, 0, 8 * math.sin(t * 90), 0, 1, 6 * math.cos(t * 70)))
     # white flash at start and into main section
-    flash = max(0, 1 - t / 0.25) + max(0, (t - (INTRO - 0.15)) / 0.15)
+    flash = max(0, 1 - (t - c0) / 0.2) + max(0, (t - (INTRO - 0.15)) / 0.15)
     if flash > 0:
         fr = Image.blend(fr, Image.new("RGBA", fr.size, (255, 255, 255, 255)), min(flash, 1) * 0.85)
     return fr
@@ -275,9 +287,9 @@ def main_frame(t):
     nxt = [s[0] for s in PHOTO_SHOTS if s[0] > shot[0]]
     end = nxt[0] if nxt else TOTAL
     k = (t - shot[0]) / (end - shot[0])
-    pimg = crop_cover(photo, lerp_box(shot[1], shot[2], k), LVW, LVH)
+    pimg = crop_cover(PHOTOS[shot[1]], lerp_box(shot[2], shot[3], k), LVW, LVH)
     fr.paste(pimg, LV[:2], lv_mask)
-    tg = tags[shot[3]]
+    tg = tags[shot[4]]
     if t - shot[0] > 0.25:
         fr.alpha_composite(tg, (LV[0] + 16, LV[1] + 18))
     # presenter
@@ -354,10 +366,11 @@ for (i, a, b), s in zip(CLIPS, clip_starts):
     put(v, s, 1.0)
 if args.music:
     m = load_audio(args.music, args.music_start, args.music_start + TOTAL)
-    env = np.full(len(m), 0.12, np.float32)
+    env = np.full(len(m), args.bed, np.float32)
     env[: int((INTRO - 0.3) * SR)] = 0.9
+    fi = int(0.12 * SR); env[:fi] *= np.linspace(0, 1, fi)
     ramp = int(0.5 * SR); j = int((INTRO - 0.3) * SR)
-    env[j:j + ramp] = np.linspace(0.9, 0.12, ramp)
+    env[j:j + ramp] = np.linspace(0.9, args.bed, ramp)
     tail = int(1.0 * SR); env[-tail:] *= np.linspace(1, 0, tail)
     put(m * env[:, None], 0.0)
 else:
